@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>マークシート学習アプリ</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+
+<h1>マークシート</h1>
+
+<div class="panel">
+
+<h2>問題セット作成</h2>
+
+<label>セット名</label>
+<input id="setName">
+
+<label>問題数</label>
+<input id="questionCount" type="number" min="1">
+
+<label>選択肢数</label>
+<input id="choiceCount" type="number" min="2" max="10">
+
+<button id="createBtn">正解入力開始</button>
+
+</div>
+
+<div id="answerEditor"></div>
+
+<hr>
+
+<div class="panel">
+
+<h2>保存済みセット</h2>
+
+<select id="setList"></select>
+
+<button id="loadBtn">開く</button>
+
+<button id="deleteBtn">削除</button>
+<button id="exportBtn">JSON出力</button>
+<input type="file" id="importFile">
+
+</div>
+
+<hr>
+
+<div id="quizArea"></div>
+
+
+    <aside id="statusPanel">
+
+        <h3>成績</h3>
+
+        <p>問題数:
+            <span id="totalCount">0</span>
+        </p>
+        <p>回答数：
+            <span id="answeredCount">0</span>
+        </p>
+        <p>正答数:
+            <span id="correctCount">0</span>
+        </p>
+
+        
+        <p>正答率:
+            <span id="accuracy">0%</span>
+        </p>
+        <p>誤答数:
+            <span id="wrongCount">0</span>
+        </p>
+        <p>未回答：
+            <span id="unansweredCount">0</span>
+        </p>
+        <button onclick="scrollToTop()">
+            TOP
+        </button>
+
+        <button onclick="location.reload()">
+            更新
+        </button>
+        <button onclick="resetAnswers()">
+            解答リセット
+        </button>
+
+    </aside>
+
+<script src="app.js"></script>
+
+</body>
+</html>
