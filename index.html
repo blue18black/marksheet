@@ -42,7 +42,7 @@
 <select id="setList"></select>
 
 <button id="loadBtn">開く</button>
-
+<button id="closeBtn">閉じる</button>
 <button id="deleteBtn">削除</button>
 <button id="exportBtn">JSON出力</button>
 <input type="file" id="importFile">
@@ -57,7 +57,14 @@
     <aside id="statusPanel">
 
         <h3>成績</h3>
+        <p>
+        現在：
+        <span id="currentSetName">
+        なし
+        </span>
+        </p>
 
+        <hr>
         <p>問題数:
             <span id="totalCount">0</span>
         </p>
