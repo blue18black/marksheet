@@ -6,8 +6,13 @@ let correctCount = 0;
 
 let answered = {};
 
+let editingAnswers = {};
 
 loadSetList();
+
+document
+.getElementById("closeBtn")
+.addEventListener("click", closeSheet);
 
 document
 .getElementById("createBtn")
@@ -29,6 +34,45 @@ document
 .getElementById("importFile")
 .addEventListener("change", importJson);
 
+function closeSheet(){
+
+    currentSet = null;
+
+    answered = {};
+
+    document
+    .getElementById("currentSetName")
+    .textContent = "なし";
+
+    document
+        .getElementById("quizArea")
+        .innerHTML = "";
+
+    document
+        .getElementById("totalCount")
+        .textContent = 0;
+
+    document
+        .getElementById("answeredCount")
+        .textContent = 0;
+
+    document
+        .getElementById("correctCount")
+        .textContent = 0;
+
+    document
+        .getElementById("wrongCount")
+        .textContent = 0;
+
+    document
+        .getElementById("unansweredCount")
+        .textContent = 0;
+
+    document
+        .getElementById("accuracy")
+        .textContent = "0%";
+}
+
 function createEditor(){
 
     const qCount =
@@ -41,23 +85,31 @@ function createEditor(){
 
     for(let i=1;i<=qCount;i++){
 
-        html += `<div>
-        Q${i}
-        <select id="ans${i}">
+        html += `
+        <div class="edit-question">
+
+            <div class="question-label">
+                Q${i}
+            </div>
+
+            <div class="edit-choices">
         `;
 
         for(let j=0;j<cCount;j++){
 
             html += `
-            <option>
-            ${LETTERS[j]}
-            </option>
-            `;
+            <span
+                class="edit-choice"
+                data-q="${i}"
+                data-answer="${LETTERS[j]}">
 
+                ${LETTERS[j]}
+            </span>
+            `;
         }
 
         html += `
-        </select>
+            </div>
         </div>
         `;
     }
@@ -71,6 +123,16 @@ function createEditor(){
     document
     .getElementById("answerEditor")
     .innerHTML = html;
+
+    document
+    .querySelectorAll(".edit-choice")
+    .forEach(elem=>{
+
+        elem.addEventListener(
+            "click",
+            selectCorrectAnswer
+        );
+    });
 }
 
 function saveSet(){
@@ -84,12 +146,25 @@ function saveSet(){
     const cCount =
     Number(document.getElementById("choiceCount").value);
 
+    // 未設定チェック
+    for(let i=1;i<=qCount;i++){
+
+        if(!editingAnswers[i]){
+
+            alert(
+                `Q${i}の正解が未設定です`
+            );
+
+            return;
+        }
+    }
+
     const answers=[];
 
     for(let i=1;i<=qCount;i++){
 
         answers.push(
-            document.getElementById(`ans${i}`).value
+            editingAnswers[i]
         );
     }
 
@@ -151,10 +226,20 @@ function loadSelected(){
     currentSet =
     sets.find(x=>x.id===id);
 
+    answered = {};
+
+    document
+        .getElementById("currentSetName")
+        .textContent =
+        currentSet.name;
+
     renderQuiz();
+
+    updateResults();
 }
 
 function renderQuiz(){
+    answered = {};
 
     let html="";
 
@@ -236,6 +321,34 @@ function checkAnswer(){
             "choice-wrong"
         );
     });
+
+    const result =
+        document.getElementById(`result${q}`);
+
+    if(answered[q] === answer){
+
+        delete answered[q];
+
+        document
+        .querySelectorAll(
+            `.choice[data-q="${q}"]`
+        )
+        .forEach(x=>{
+
+            x.classList.remove(
+                "choice-correct",
+                "choice-wrong"
+            );
+        });
+
+        result.className = "result";
+
+        result.textContent = "-";
+
+        updateResults();
+
+        return;
+    }
 
     answered[q]=answer;
 
@@ -442,6 +555,14 @@ function goHome(){
 
     answered = {};
 
+    editingAnswers = {};
+
+    currentSet = null;
+
+    document
+    .getElementById("currentSetName")
+    .textContent = "なし";
+
     document
         .getElementById("quizArea")
         .innerHTML = "";
@@ -516,4 +637,30 @@ function resetAnswers(){
         });
 
     updateResults();
+}
+
+function selectCorrectAnswer(){
+
+    const q =
+        Number(this.dataset.q);
+
+    const answer =
+        this.dataset.answer;
+
+    document
+    .querySelectorAll(
+        `.edit-choice[data-q="${q}"]`
+    )
+    .forEach(x=>{
+
+        x.classList.remove(
+            "edit-selected"
+        );
+    });
+
+    this.classList.add(
+        "edit-selected"
+    );
+
+    editingAnswers[q] = answer;
 }
