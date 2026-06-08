@@ -218,3 +218,28 @@ body{
 
     gap:5px;
 }
+.edit-choice{
+
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    border:1px solid black;
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    margin:3px;
+}
+.edit-selected{
+
+    background:black;
+
+    color:white;
+}
