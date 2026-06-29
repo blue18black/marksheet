@@ -12,91 +12,108 @@
 
 <body>
 
-<h1>マークシート</h1>
+<header class="app-header">
+    <h1>マークシート</h1>
+    <p class="app-subtitle">問題セットを作って、解答練習をしよう</p>
+</header>
 
-<div class="panel">
+<main class="container">
 
-<h2>問題セット作成</h2>
+<section class="panel">
 
-<label>セット名</label>
-<input id="setName">
+    <h2>問題セット作成</h2>
 
-<label>問題数</label>
-<input id="questionCount" type="number" min="1">
+    <div class="field">
+        <label for="setName">セット名</label>
+        <input id="setName" type="text" placeholder="例：数学 第1回">
+    </div>
 
-<label>選択肢数</label>
-<input id="choiceCount" type="number" min="2" max="10">
+    <div class="field-row">
+        <div class="field">
+            <label for="questionCount">問題数</label>
+            <input id="questionCount" type="number" min="1">
+        </div>
+        <div class="field">
+            <label for="choiceCount">選択肢数</label>
+            <input id="choiceCount" type="number" min="2" max="10">
+        </div>
+    </div>
 
-<button id="createBtn">正解入力開始</button>
+    <button id="createBtn" class="btn btn-primary">正解入力開始</button>
 
-</div>
+</section>
 
 <div id="answerEditor"></div>
 
-<hr>
+<section class="panel">
 
-<div class="panel">
+    <h2>保存済みセット</h2>
 
-<h2>保存済みセット</h2>
+    <div class="field">
+        <label for="setList">セットを選択</label>
+        <select id="setList"></select>
+    </div>
 
-<select id="setList"></select>
+    <div class="btn-group">
+        <button id="loadBtn" class="btn btn-primary">開く</button>
+        <button id="closeBtn" class="btn">閉じる</button>
+        <button id="deleteBtn" class="btn btn-outline">削除</button>
+        <button id="exportBtn" class="btn">JSON出力</button>
+    </div>
 
-<button id="loadBtn">開く</button>
-<button id="closeBtn">閉じる</button>
-<button id="deleteBtn">削除</button>
-<button id="exportBtn">JSON出力</button>
-<input type="file" id="importFile">
+    <div class="field">
+        <label for="importFile">JSONから読み込み</label>
+        <input type="file" id="importFile" accept="application/json">
+    </div>
 
-</div>
-
-<hr>
+</section>
 
 <div id="quizArea"></div>
 
+</main>
 
-    <aside id="statusPanel">
+<aside id="statusPanel">
 
-        <h3>成績</h3>
-        <p>
-        現在：
-        <span id="currentSetName">
-        なし
-        </span>
-        </p>
+    <h3>成績</h3>
 
-        <hr>
-        <p>問題数:
-            <span id="totalCount">0</span>
-        </p>
-        <p>回答数：
-            <span id="answeredCount">0</span>
-        </p>
-        <p>正答数:
-            <span id="correctCount">0</span>
-        </p>
+    <p class="status-current">
+        現在：<span id="currentSetName">なし</span>
+    </p>
 
-        
-        <p>正答率:
-            <span id="accuracy">0%</span>
-        </p>
-        <p>誤答数:
-            <span id="wrongCount">0</span>
-        </p>
-        <p>未回答：
-            <span id="unansweredCount">0</span>
-        </p>
-        <button onclick="scrollToTop()">
-            TOP
-        </button>
+    <dl class="status-grid">
+        <div class="status-row">
+            <dt>問題数</dt>
+            <dd id="totalCount">0</dd>
+        </div>
+        <div class="status-row">
+            <dt>回答数</dt>
+            <dd id="answeredCount">0</dd>
+        </div>
+        <div class="status-row">
+            <dt>正答数</dt>
+            <dd id="correctCount">0</dd>
+        </div>
+        <div class="status-row">
+            <dt>誤答数</dt>
+            <dd id="wrongCount">0</dd>
+        </div>
+        <div class="status-row">
+            <dt>未回答</dt>
+            <dd id="unansweredCount">0</dd>
+        </div>
+        <div class="status-row status-row-accent">
+            <dt>正答率</dt>
+            <dd id="accuracy">0%</dd>
+        </div>
+    </dl>
 
-        <button onclick="location.reload()">
-            更新
-        </button>
-        <button onclick="resetAnswers()">
-            解答リセット
-        </button>
+    <div class="btn-group btn-group-vertical">
+        <button id="scrollTopBtn" class="btn">TOP</button>
+        <button id="reloadBtn" class="btn">更新</button>
+        <button id="resetBtn" class="btn btn-outline">解答リセット</button>
+    </div>
 
-    </aside>
+</aside>
 
 <script src="app.js"></script>
 
